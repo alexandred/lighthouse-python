@@ -122,7 +122,7 @@ class LighthouseRunner:
                 'lighthouse',
                 url,
                 '--quiet' if quiet else '',
-                '--chrome-flags="{chrome_flags}"'.format(chrome_flags),
+                '--chrome-flags="{0}"'.format(chrome_flags),
                 '--preset=perf',
                 '--emulated-form-factor={0}'.format(form_factor),
                 '--output=json',
