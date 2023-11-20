@@ -36,9 +36,17 @@ class LighthouseRunner:
             could not be loaded.
     """
 
-    def __init__(self, url:str, form_factor:str='mobile', quiet:bool=True,
-                 additional_settings:List[str]=[],timings:List[str]=BASE_TIMINGS,
-                 output_type:str='none',output_dir:str='./') -> None :
+    def __init__(
+        self,
+        url:str,
+        form_factor:str='mobile',
+        quiet:bool=True,
+        chrome_flags: str='--headless --no-sandbox',
+        additional_settings:List[str]=[],
+        timings:List[str]=BASE_TIMINGS,
+        output_type:str='none',
+        output_dir:str='./'
+    ) -> None :
         """ 
         Initialize a new LighthousePerformanceTest object.
         
@@ -49,6 +57,8 @@ class LighthouseRunner:
                 Defaults to 'mobile'.
                 
             quiet (bool, optional): Whether to suppress output to stdout. Defaults to True.
+
+            chrome_flags (str, optional): A string of flags used to configure the Chrome runner.
             
             additional_settings (list, optional): A list of additional parameters to use for the test.
                 Defaults to an empty list.
@@ -81,7 +91,7 @@ class LighthouseRunner:
         self.output_type = output_type.lower().strip()
         
         # Run the performance test with the given settings and get the report data
-        self._run(url, form_factor, quiet, additional_settings)
+        self._run(url, form_factor, quiet, chrome_flags, additional_settings)
         self.report = self._get_report()
         
         # Clean up any temporary files
@@ -92,7 +102,7 @@ class LighthouseRunner:
         url:str,
         form_factor:str='mobile',
         quiet:bool=True,
-        chrome_flags: List[str]="--headless --no-sandbox",
+        chrome_flags: str='--headless --no-sandbox',
         additional_settings:List[str]=[]
     ) -> None:
         """
@@ -123,8 +133,7 @@ class LighthouseRunner:
                 url,
                 '--quiet' if quiet else '',
                 '--chrome-flags="{0}"'.format(chrome_flags),
-                '--preset=perf',
-                '--emulated-form-factor={0}'.format(form_factor),
+                '--preset={0}'.format(form_factor),
                 '--output=json',
                 '--output=html',
                 '--output-path={0}'.format(self.report_path),
@@ -132,6 +141,7 @@ class LighthouseRunner:
 
             # Run the Lighthouse CLI command
             command = command + additional_settings
+            breakpoint()
             subprocess.check_call(' '.join(command), shell=True)
         except subprocess.CalledProcessError as exc:
             # If an error occurs, raise a RuntimeError with a detailed error message
