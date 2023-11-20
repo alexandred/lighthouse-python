@@ -87,8 +87,14 @@ class LighthouseRunner:
         # Clean up any temporary files
         self._clean()
 
-    def _run(self, url:str, form_factor:str='mobile', quiet:bool=True,
-                 additional_settings:List[str]=[]) -> None:
+    def _run(
+        self,
+        url:str,
+        form_factor:str='mobile',
+        quiet:bool=True,
+        chrome_flags: List[str]="--headless --no-sandbox",
+        additional_settings:List[str]=[]
+    ) -> None:
         """
         Run a performance test using the Lighthouse CLI.
         
@@ -116,7 +122,7 @@ class LighthouseRunner:
                 'lighthouse',
                 url,
                 '--quiet' if quiet else '',
-                '--chrome-flags="--headless --no-sandbox"',
+                '--chrome-flags="{chrome_flags}"'.format(chrome_flags),
                 '--preset=perf',
                 '--emulated-form-factor={0}'.format(form_factor),
                 '--output=json',
