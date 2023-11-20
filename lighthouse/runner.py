@@ -141,7 +141,6 @@ class LighthouseRunner:
 
             # Run the Lighthouse CLI command
             command = command + additional_settings
-            breakpoint()
             subprocess.check_call(' '.join(command), shell=True)
         except subprocess.CalledProcessError as exc:
             # If an error occurs, raise a RuntimeError with a detailed error message
