@@ -41,7 +41,7 @@ class LighthouseRunner:
     def __init__(
         self,
         url:str,
-        config:str='default',
+        preset:str='default',
         form_factor:str='mobile',
         quiet:bool=True,
         chrome_flags: str=DEFAULT_CHROME_FLAGS,
@@ -96,7 +96,7 @@ class LighthouseRunner:
         self.output_type = output_type.lower().strip()
 
         # Run the performance test with the given settings and get the report data
-        self._run(url, form_factor, quiet, chrome_flags, additional_settings)
+        self._run(url, preset, form_factor, quiet, chrome_flags, additional_settings)
         self.report = self._get_report()
 
         # Clean up any temporary files
